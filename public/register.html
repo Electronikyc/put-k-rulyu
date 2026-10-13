@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация — Путь к Рулю</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #2a1b5e, #1e3a8a);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+        .card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        h1 { text-align: center; color: #1a1a2e; }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        input:focus { border-color: #f5a623; outline: none; }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff8a00, #f5a623);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        button:hover { opacity: 0.9; }
+        .message { text-align: center; margin-top: 15px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🚗 Регистрация</h1>
+        <form id="registerForm">
+            <input type="text" id="fullName" placeholder="Иван Иванов" required>
+            <input type="email" id="email" placeholder="you@example.com" required>
+            <input type="tel" id="phone" placeholder="+7 (999) 123-45-67" required>
+            <input type="password" id="password" placeholder="Пароль (мин. 6 символов)" minlength="6" required>
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+        <p class="message" id="message"></p>
+    </div>
+
+    <script type="module">
+        // Импортируем функции Firebase
+        import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+        import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        
+        // Импортируем наш настроенный Firebase
+        import { auth, db } from '../firebase.js';
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const msg = document.getElementById('message');
+
+            try {
+                // 1. Создаём пользователя в Firebase Authentication
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // 2. Сохраняем профиль в Firestore
+                await setDoc(doc(db, 'users', user.uid), {
+                    email: email,
+                    fullName: fullName,
+                    phone: phone,
+                    role: 'student',
+                    createdAt: new Date().toISOString()
+                });
+
+                msg.textContent = '✅ Регистрация успешна!';
+                msg.style.color = 'green';
+                document.getElementById('registerForm').reset();
+            } catch (error) {
+                console.error(error);
+                msg.textContent = '❌ Ошибка: ' + error.message;
+                msg.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>
