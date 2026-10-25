@@ -2,7 +2,23 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Базовые SEO-метатеги -->
     <title>Регистрация — Путь к Рулю</title>
+    <meta name="description" content="Создайте аккаунт в приложении «Путь к Рулю» и начните обучение в автошколе онлайн.">
+    
+    <!-- Запрет индексации этой страницы (так как это личный кабинет/регистрация) -->
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Open Graph (для красивого отображения ссылки в соцсетях и мессенджерах) -->
+    <meta property="og:title" content="Регистрация — Путь к Рулю">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://example.com/register.html">
+    <meta property="og:image" content="https://example.com/og-image.png">
+    <meta property="og:description" content="Создайте аккаунт в приложении «Путь к Рулю».">
+    <meta property="og:site_name" content="Путь к Рулю">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,7 +36,11 @@
             width: 400px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.4);
         }
-        h1 { text-align: center; color: #1a1a2e; }
+        h1 { 
+            text-align: center; 
+            color: #1a1a2e; 
+            margin-bottom: 20px;
+        }
         input {
             width: 100%;
             padding: 12px;
@@ -30,7 +50,10 @@
             font-size: 15px;
             box-sizing: border-box;
         }
-        input:focus { border-color: #f5a623; outline: none; }
+        input:focus { 
+            border-color: #f5a623; 
+            outline: none; 
+        }
         button {
             width: 100%;
             padding: 14px;
@@ -43,22 +66,36 @@
             cursor: pointer;
             margin-top: 15px;
         }
-        button:hover { opacity: 0.9; }
-        .message { text-align: center; margin-top: 15px; font-weight: bold; }
+        button:hover { 
+            opacity: 0.9; 
+        }
+        .message { 
+            text-align: center; 
+            margin-top: 15px; 
+            font-weight: bold; 
+        }
     </style>
 </head>
 <body>
-    <div class="card">
+    <main class="card">
         <h1>🚗 Регистрация</h1>
         <form id="registerForm">
+            <label for="fullName" style="display:none;">Имя и фамилия</label>
             <input type="text" id="fullName" placeholder="Иван Иванов" required>
+            
+            <label for="email" style="display:none;">Email</label>
             <input type="email" id="email" placeholder="you@example.com" required>
+            
+            <label for="phone" style="display:none;">Телефон</label>
             <input type="tel" id="phone" placeholder="+7 (999) 123-45-67" required>
+            
+            <label for="password" style="display:none;">Пароль</label>
             <input type="password" id="password" placeholder="Пароль (мин. 6 символов)" minlength="6" required>
+            
             <button type="submit">Зарегистрироваться</button>
         </form>
         <p class="message" id="message"></p>
-    </div>
+    </main>
 
     <script type="module">
         // Импортируем функции Firebase
